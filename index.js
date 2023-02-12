@@ -27,7 +27,7 @@ db.once("open", async () => console.log("Database connected"));
 // CORS
 const corsOptions = {
   origin: ["http://localhost:3000"],
-  methods: "GET,POST,OPTIONS",
+  methods: "GET,POST,DELETE,OPTIONS",
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };

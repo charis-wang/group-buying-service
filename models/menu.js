@@ -10,21 +10,47 @@ const menuSchema = new Schema({
 });
 
 const menuModel = mongoose.model("Menu", menuSchema);
+
 const unzipMenuByGroup = (menu) => {
-  return Object.values(menu).reduce((accumulator, currentValue) =>
-    accumulator.concat(currentValue)
+  return Object.values(menu).reduce(
+    (accumulator, currentValue) => accumulator.concat(currentValue),
+    []
   );
 };
 
-const updateMenuOfShop = async (shopId, menuData) => {
-  menuModel.deleteMany({ shop: shopId });
-  const processedMenuData = unzipMenuByGroup(menuData);
-  const payload = processedMenuData.map((data) => ({
-    ...data,
-    shop: shopId,
-  }));
-
-  return menuModel.insertMany(payload);
+const zipMenuByGroup = (menuData) => {
+  let menu = {};
+  for (let doc of menuData) {
+    const groupName = doc.groupName;
+    if (menu[groupName]) {
+      menu[groupName].push(doc);
+    } else {
+      menu[groupName] = [doc];
+    }
+  }
+  return menu;
 };
 
-export default { menuSchema, menuModel, updateMenuOfShop };
+const updateMenu = async (shopId, menuData) => {
+  const payload = unzipMenuByGroup(menuData);
+
+  for (let doc of payload) {
+    doc["shop"] = shopId;
+    if (doc["_id"]) delete doc["_id"];
+  }
+
+  await menuModel.deleteMany({ shop: shopId });
+  await menuModel.insertMany(payload);
+
+  return shopId;
+};
+
+const fetchByShopId = async (shopId) => {
+  const result = await menuModel.find({ shop: shopId });
+
+  if (result) return zipMenuByGroup(result);
+};
+
+const remove = async (shopId) => await menuModel.deleteMany({ shop: shopId });
+
+export default { menuSchema, menuModel, updateMenu, fetchByShopId, remove };
