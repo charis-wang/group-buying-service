@@ -2,15 +2,36 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
+import session from "express-session";
+import passport from "passport";
+import LocalStrategy from "passport-local";
 import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import { mongoose } from "mongoose";
 
 import rootRoutes from "./app";
+import account from "./models/account";
 
 const PORT = process.env.PORT || 2001;
 const app = express();
+
+// Session
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    saveUninitialized: true,
+    resave: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(account.strategy);
+passport.serializeUser((user, done) => done(null, user._id));
+passport.deserializeUser((id, done) =>
+  account.accountModel.findById(id).then((user) => done(null, user))
+);
 
 // Database
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017";
