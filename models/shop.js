@@ -30,4 +30,14 @@ const fetch = async (shopId) => await shopModel.findById(shopId);
 
 const remove = async (shopId) => await shopModel.deleteOne({ _id: shopId });
 
-export default { shopSchema, shopModel, upsert, fetch, remove };
+const fetchAll = async () => {
+  const originalShops = await shopModel.find();
+  const shops = originalShops.map((doc) => ({
+    label: doc.shopName,
+    value: doc._id.toHexString(),
+  }));
+
+  return shops;
+};
+
+export default { shopSchema, shopModel, upsert, fetch, remove, fetchAll };

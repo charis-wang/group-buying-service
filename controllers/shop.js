@@ -1,6 +1,5 @@
 import shop from "../models/shop";
 import menu from "../models/menu";
-import { mongoose } from "mongoose";
 
 const fetchShop = async (req, res) => {
   const shopId = req.query.id;
@@ -28,4 +27,15 @@ const deleteShopAndMenu = async (req, res) => {
   await menu.remove(shopId);
 };
 
-export default { fetchShop, updateShopAndMenu, deleteShopAndMenu };
+const fetchShops = async (req, res) => {
+  const shops = await shop.fetchAll();
+
+  res.json({ shops: shops });
+};
+
+export default {
+  fetchShop,
+  updateShopAndMenu,
+  deleteShopAndMenu,
+  fetchShops,
+};

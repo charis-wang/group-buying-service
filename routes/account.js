@@ -3,9 +3,9 @@ import { register, login, logout, info } from "../controllers/account";
 
 const router = Router();
 
-router.post("/register", register);
+router.post("/signup", register);
 router.post("/login", login);
-router.get("/logout", logout);
+router.post("/logout", logout);
 router.get("/info", info);
 
 export default router;
