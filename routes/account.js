@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { loginRequired } from "../middlewares/auth";
 import { register, login, logout, info } from "../controllers/account";
 
 const router = Router();
@@ -6,6 +7,6 @@ const router = Router();
 router.post("/signup", register);
 router.post("/login", login);
 router.post("/logout", logout);
-router.get("/info", info);
+router.get("/info", loginRequired, info);
 
 export default router;

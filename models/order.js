@@ -16,4 +16,7 @@ const generate = async (data) => {
   return order._id;
 };
 
-export default { orderSchema, orderModel, generate };
+const fetch = async (orderId) =>
+  await orderModel.findById(orderId).populate("shop");
+
+export default { orderSchema, orderModel, generate, fetch };

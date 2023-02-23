@@ -49,12 +49,6 @@ const logout = async (req, res, next) => {
 };
 
 const info = async (req, res) => {
-  if (!req.isAuthenticated()) {
-    res.status(401);
-    res.json({ error: "Not login yet." });
-    return;
-  }
-
   const { username } = req.user;
   res.json({ username });
 };

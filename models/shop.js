@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const shopSchema = new Schema({
-  shopName: String,
+  shopName: { type: String, unique: true, required: true },
   shopType: String,
   shopPhoneNumber: String,
   shopAddress: String,
