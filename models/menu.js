@@ -47,7 +47,6 @@ const updateMenu = async (shopId, menuData) => {
 
 const fetchByShopId = async (shopId) => {
   const result = await menuModel.find({ shop: shopId });
-
   if (result) return zipMenuByGroup(result);
 };
 

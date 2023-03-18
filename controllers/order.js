@@ -11,14 +11,23 @@ const createOrder = async (req, res) => {
 const fetchOrder = async (req, res) => {
   const orderId = req.query.id;
 
-  const order_data = await order.fetch(orderId);
-  const shopId = order_data.shop._id;
-  const menu_data = await menu.fetchByShopId(shopId);
+  const orderData = await order.fetch(orderId);
+  const shopId = orderData.shop._id;
+  const menuData = await menu.fetchByShopId(shopId);
 
-  res.json({ orderData: order_data, menuData: menu_data });
+  res.json({ orderData: orderData, menuData: menuData });
+};
+
+const updateOrderStatus = async (req, res) => {
+  const orderId = req.query.id;
+  const orderStatus = req.query.status;
+
+  await order.updateStatus(orderId, orderStatus);
+  res.end();
 };
 
 export default {
   createOrder,
   fetchOrder,
+  updateOrderStatus,
 };

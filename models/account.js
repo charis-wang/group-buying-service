@@ -19,14 +19,6 @@ const strategy = new LocalStrategy((username, password, callback) =>
     .catch((err) => callback(err))
 );
 
-const createAccount = async (userInfo) => {
-  try {
-    const account = await accountModel.create(userInfo);
-    return account;
-  } catch (err) {
-    if (err && err.code === 11000) return { error: "duplicate username" };
-    throw err;
-  }
-};
+const createAccount = async (userInfo) => accountModel.create(userInfo);
 
 export default { accountSchema, accountModel, strategy, createAccount };

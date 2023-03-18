@@ -5,6 +5,6 @@ const router = Router();
 
 router.get("/", shop.fetchShop);
 
-router.post("/showAll", shop.fetchShops);
+router.get("/shop_options", shop.fetchShopOptions);
 
 export default router;

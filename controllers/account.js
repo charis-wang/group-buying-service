@@ -1,6 +1,7 @@
 import { response } from "express";
 import passport from "passport";
 import account from "../models/account";
+import { errorResponse } from "./base";
 
 const filteredUserInfo = (user) => ({
   username: user.username,
@@ -9,11 +10,14 @@ const filteredUserInfo = (user) => ({
 const register = async (req, res) => {
   const userInfo = req.body;
 
-  const response = await account.createAccount(userInfo);
-
-  if (response.error) res.status(422);
-
-  res.json(response);
+  account
+    .createAccount(userInfo)
+    .then((result) => res.json(result))
+    .catch((error) => {
+      if (error && error.code === 11000)
+        errorResponse(res, 422, "username is duplicated.");
+      else throw error;
+    });
 };
 
 const login = async (req, res, next) => {
@@ -21,8 +25,7 @@ const login = async (req, res, next) => {
     if (err) next(err);
 
     if (!user) {
-      res.status(401);
-      return res.json({ success: false, message: "authentication failed" });
+      errorResponse(res, 401, "authentication failed");
     }
     req.login(user, (loginErr) =>
       loginErr
@@ -37,11 +40,6 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    res.status(400);
-    res.json({ error: "Not login yet." });
-    return;
-  }
   req.logout((err) => {
     if (err) next(err);
   });

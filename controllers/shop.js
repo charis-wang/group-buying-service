@@ -27,15 +27,20 @@ const deleteShopAndMenu = async (req, res) => {
   await menu.remove(shopId);
 };
 
-const fetchShops = async (req, res) => {
-  const shops = await shop.fetchAll();
+const fetchShopOptions = async (req, res) => {
+  const result = await shop.fetchShopOptions();
+  const shopOptions = result.map((option) => ({
+    label: option.shopName,
+    value: option._id,
+    type: option.shopType,
+  }));
 
-  res.json({ shops: shops });
+  res.json(shopOptions);
 };
 
 export default {
   fetchShop,
   updateShopAndMenu,
   deleteShopAndMenu,
-  fetchShops,
+  fetchShopOptions,
 };

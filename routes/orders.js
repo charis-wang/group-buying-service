@@ -7,7 +7,15 @@ const router = Router();
 
 router.post("/create", order.createOrder);
 router.get("/", order.fetchOrder);
+router.get("/update", order.updateOrderStatus);
 
-router.post("/orderItem", loginRequired, orderItem.createOrderItem);
+router.post("/order_item", loginRequired, orderItem.createOrderItem);
+router.get("/order_item", orderItem.fetchOrderItem);
+
+router.post(
+  "/payment_status",
+  loginRequired,
+  orderItem.updateOrderPaymentStatus
+);
 
 export default router;

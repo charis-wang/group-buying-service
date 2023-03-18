@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(account.strategy);
-passport.serializeUser((user, done) => done(null, user._id));
+passport.serializeUser((user, done) => (user ? done(null, user._id) : false));
 passport.deserializeUser((id, done) =>
   account.accountModel.findById(id).then((user) => done(null, user))
 );
