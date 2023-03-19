@@ -1,10 +1,15 @@
 import shop from "../models/shop";
 import menu from "../models/menu";
+import { errorResponse } from "./base";
 
 const fetchShop = async (req, res) => {
   const shopId = req.query.id;
-
   const shop_data = await shop.fetch(shopId);
+
+  if (!shop_data) {
+    errorResponse(res, 404, "shopId Not Found");
+    return;
+  }
 
   res.json(shop_data);
 };

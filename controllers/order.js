@@ -1,5 +1,6 @@
 import order from "../models/order";
 import menu from "../models/menu";
+import { errorResponse } from "./base";
 
 const createOrder = async (req, res) => {
   const data = req.body;
@@ -10,8 +11,11 @@ const createOrder = async (req, res) => {
 
 const fetchOrder = async (req, res) => {
   const orderId = req.query.id;
-
   const orderData = await order.fetch(orderId);
+  if (!orderData) {
+    errorResponse(res, 404, "orderId Not Found");
+    return;
+  }
   const shopId = orderData.shop._id;
   const menuData = await menu.fetchByShopId(shopId);
 

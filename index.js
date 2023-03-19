@@ -59,6 +59,8 @@ app.use(bodyParser.json());
 
 app.use("/", rootRoutes);
 
+process.on("uncaughtException", (err) => console.log(err));
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

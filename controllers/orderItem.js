@@ -25,6 +25,11 @@ const fetchOrderItem = async (req, res) => {
     personal ? req.user.username : undefined
   );
 
+  if (!orderItemData) {
+    errorResponse(res, 404, "orderId Not Found");
+    return;
+  }
+
   const response = orderItemData.map((data) => ({
     order: data.order,
     buyer: data.buyer,

@@ -46,6 +46,7 @@ const updateMenu = async (shopId, menuData) => {
 };
 
 const fetchByShopId = async (shopId) => {
+  if (!mongoose.Types.ObjectId.isValid(shopId)) return;
   const result = await menuModel.find({ shop: shopId });
   if (result) return zipMenuByGroup(result);
 };

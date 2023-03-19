@@ -26,7 +26,10 @@ const upsert = async (data) => {
   return _id || shop._id;
 };
 
-const fetch = async (shopId) => await shopModel.findById(shopId);
+const fetch = async (shopId) => {
+  if (!mongoose.Types.ObjectId.isValid(shopId)) return;
+  await shopModel.findById(shopId);
+};
 const fetchAll = async () => await shopModel.find();
 const fetchShopOptions = async () => await shopModel.find({});
 

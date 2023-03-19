@@ -18,8 +18,10 @@ const generate = async (data) => {
   return order._id;
 };
 
-const fetch = async (orderId) =>
-  await orderModel.findById(orderId).populate("shop");
+const fetch = async (orderId) => {
+  if (!mongoose.Types.ObjectId.isValid(orderId)) return;
+  return await orderModel.findById(orderId).populate("shop");
+};
 
 const updateStatus = async (orderId, orderStatus) => {
   if (!mongoose.Types.ObjectId.isValid(orderId)) return;
