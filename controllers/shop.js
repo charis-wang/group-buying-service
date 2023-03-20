@@ -30,6 +30,8 @@ const deleteShopAndMenu = async (req, res) => {
   await shop.remove(shopId);
 
   await menu.remove(shopId);
+
+  res.end();
 };
 
 const fetchShopOptions = async (req, res) => {
