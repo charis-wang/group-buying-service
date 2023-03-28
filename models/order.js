@@ -28,4 +28,10 @@ const updateStatus = async (orderId, orderStatus) => {
   await orderModel.findOneAndUpdate({ _id: orderId }, { status: orderStatus });
 };
 
-export default { orderSchema, orderModel, generate, fetch, updateStatus };
+export default {
+  orderSchema,
+  orderModel,
+  generate,
+  fetch,
+  updateStatus,
+};

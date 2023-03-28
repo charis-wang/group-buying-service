@@ -44,10 +44,38 @@ const fetch = async (orderId, buyer) => {
   return orderItems;
 };
 
+const fetchOrders = async (buyer) => {
+  const filter = {};
+  if (buyer) filter["buyer"] = buyer;
+  const myOrders = await orderItemModel.find(filter).populate("order");
+
+  const orders = [];
+  const orderIds = [];
+
+  const filteredData = (orderItems) => {
+    orderItems.forEach((orderItem) => {
+      if (orderIds.includes(orderItem.order._id.toString())) return;
+      orderIds.push(orderItem.order._id.toString());
+      orders.push({
+        [orderItem.order._id]: {
+          orderDeadline: orderItem.order.orderDeadline,
+          status: orderItem.order.status,
+          payment: orderItem.status,
+        },
+      });
+    });
+  };
+
+  await filteredData(myOrders);
+
+  return orders;
+};
+
 export default {
   orderItemSchema,
   orderItemModel,
   upsert,
   updatePaidStatus,
   fetch,
+  fetchOrders,
 };

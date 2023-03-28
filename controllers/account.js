@@ -1,7 +1,9 @@
 import { response } from "express";
 import passport from "passport";
 import account from "../models/account";
+import orderItem from "../models/orderItem";
 import { errorResponse } from "./base";
+import order from "../models/order";
 
 const filteredUserInfo = (user) => ({
   username: user.username,
@@ -51,4 +53,11 @@ const info = async (req, res) => {
   res.json({ username });
 };
 
-export { register, login, logout, info };
+const myOrders = async (req, res) => {
+  const { username } = req.user;
+  const orders = await orderItem.fetchOrders(username);
+  console.log("....", orders);
+  res.json({ orders });
+};
+
+export { register, login, logout, info, myOrders };
