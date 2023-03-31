@@ -4,7 +4,6 @@ dotenv.config();
 import express from "express";
 import session from "express-session";
 import passport from "passport";
-import LocalStrategy from "passport-local";
 import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";

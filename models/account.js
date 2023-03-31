@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import LocalStrategy from "passport-local";
+import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;
 
@@ -14,11 +15,19 @@ const accountModel = mongoose.model("Account", accountSchema);
 
 const strategy = new LocalStrategy((username, password, callback) =>
   accountModel
-    .findOne({ username, password })
-    .then((user) => callback(null, user))
+    .findOne({ username })
+    .then((user) =>
+      bcrypt
+        .compare(password, user.password)
+        .then((res) => callback(null, res ? user : null))
+    )
     .catch((err) => callback(err))
 );
 
-const createAccount = async (userInfo) => accountModel.create(userInfo);
+const createAccount = async (userInfo) => {
+  bcrypt
+    .hash(userInfo.password, 10)
+    .then((hash) => accountModel.create({ ...userInfo, password: hash }));
+};
 
 export default { accountSchema, accountModel, strategy, createAccount };
