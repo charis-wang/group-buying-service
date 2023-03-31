@@ -71,6 +71,14 @@ const fetchOrders = async (buyer) => {
   return orders;
 };
 
+const remove = async (orderId, buyer) => {
+  const filter = { order: orderId };
+  if (buyer) filter["buyer"] = buyer;
+  const removeOrderItems = await orderItemModel.deleteMany(filter);
+
+  return removeOrderItems.deletedCount;
+};
+
 export default {
   orderItemSchema,
   orderItemModel,
@@ -78,4 +86,5 @@ export default {
   updatePaidStatus,
   fetch,
   fetchOrders,
+  remove,
 };

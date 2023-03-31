@@ -60,8 +60,16 @@ const updateOrderPaymentStatus = async (req, res) => {
   res.end();
 };
 
+const removeOrderItems = async (req, res) => {
+  const [orderId, personal] = [req.query.id, req.query.personal];
+  const removeCount = await orderItem.remove(orderId, personal);
+  if (!removeCount) return errorResponse(res, 400, "Cart not found!");
+  res.end();
+};
+
 export default {
   createOrderItem,
   fetchOrderItem,
   updateOrderPaymentStatus,
+  removeOrderItems,
 };

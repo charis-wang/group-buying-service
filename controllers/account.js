@@ -56,7 +56,7 @@ const info = async (req, res) => {
 const myOrders = async (req, res) => {
   const { username } = req.user;
   const orders = await orderItem.fetchOrders(username);
-  console.log("....", orders);
+
   res.json({ orders });
 };
 

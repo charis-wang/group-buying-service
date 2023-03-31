@@ -11,6 +11,7 @@ router.get("/update", order.updateOrderStatus);
 
 router.post("/order_item", loginRequired, orderItem.createOrderItem);
 router.get("/order_item", orderItem.fetchOrderItem);
+router.delete("/order_item", orderItem.removeOrderItems);
 
 router.post(
   "/payment_status",
